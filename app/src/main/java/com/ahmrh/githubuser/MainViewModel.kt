@@ -12,7 +12,7 @@ class MainViewModel : ViewModel() {
 
     companion object{
         private const val TAG = "MainViewModel"
-        private const val SEARCH_QUERY = "ahmr"
+        private const val SEARCH_QUERY = "ahm"
     }
 
     private val _listUser = MutableLiveData<List<UserItem>>()

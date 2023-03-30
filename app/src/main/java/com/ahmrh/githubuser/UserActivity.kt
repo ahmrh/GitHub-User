@@ -30,12 +30,6 @@ class UserActivity : AppCompatActivity() {
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = intent.getStringExtra(USERNAME).toString()
-        Toast.makeText(this, username, Toast.LENGTH_SHORT).show()
-        userViewModel.getDetail(username)
-        userViewModel.getFollower(username)
-        userViewModel.getFollowing(username)
-
         userViewModel.detail.observe(this) { detail ->
             setDetailUser(detail)
         }
@@ -44,8 +38,16 @@ class UserActivity : AppCompatActivity() {
             showLoading(it)
         }
 
+        init()
         setViewPager()
         supportActionBar?.elevation = 0f
+    }
+    private fun init(){
+        val username = intent.getStringExtra(USERNAME).toString()
+        Toast.makeText(this, username, Toast.LENGTH_SHORT).show()
+        userViewModel.getDetail(username)
+        userViewModel.getFollower(username)
+        userViewModel.getFollowing(username)
     }
 
     private fun setDetailUser(detail : UserResponse){
