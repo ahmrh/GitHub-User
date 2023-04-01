@@ -1,5 +1,6 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.api
 
+import com.ahmrh.githubuser.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,7 @@ class ApiConfig {
             val authInterceptor = Interceptor{ chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "token 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")
+                    .addHeader("Authorization", "token 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")
                     .build()
                 chain.proceed(requestHeaders)
             }

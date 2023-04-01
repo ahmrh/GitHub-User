@@ -1,4 +1,4 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.api
 
 import com.google.gson.annotations.SerializedName
 

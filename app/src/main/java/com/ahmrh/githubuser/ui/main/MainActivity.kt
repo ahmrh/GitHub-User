@@ -1,4 +1,4 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.ui.main
 
 import android.app.SearchManager
 import android.content.Context
@@ -10,7 +10,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ahmrh.githubuser.R
+import com.ahmrh.githubuser.api.UserItem
 import com.ahmrh.githubuser.databinding.ActivityMainBinding
+import com.ahmrh.githubuser.ui.user.UserActivity
+import com.ahmrh.githubuser.ui.adapter.ListUserAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = ListUserAdapter(listUser)
         binding.rvUser.adapter = adapter
 
-        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback{
+        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserItem) {
                 showSelectedUser(data)
             }

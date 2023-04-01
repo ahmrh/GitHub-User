@@ -1,4 +1,4 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.ui.user
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import com.ahmrh.githubuser.R
+import com.ahmrh.githubuser.api.UserResponse
 import com.ahmrh.githubuser.databinding.ActivityUserBinding
+import com.ahmrh.githubuser.ui.adapter.SectionsPagerAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 

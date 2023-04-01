@@ -1,9 +1,12 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ahmrh.githubuser.api.ApiConfig
+import com.ahmrh.githubuser.api.GitHubResponse
+import com.ahmrh.githubuser.api.UserItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

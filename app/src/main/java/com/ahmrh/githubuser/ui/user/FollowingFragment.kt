@@ -1,4 +1,4 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.ui.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ahmrh.githubuser.api.UserItem
 import com.ahmrh.githubuser.databinding.FragmentFollowerBinding
+import com.ahmrh.githubuser.ui.adapter.ListUserAdapter
 
 class FollowingFragment: Fragment() {
     private val viewModel by activityViewModels<UserViewModel>()
@@ -46,7 +48,7 @@ class FollowingFragment: Fragment() {
         val adapter = ListUserAdapter(listUser)
         binding.rvUser.adapter = adapter
 
-        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback{
+        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(user: UserItem) {
                 showSelectedUser(user)
             }

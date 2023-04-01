@@ -1,8 +1,9 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ahmrh.githubuser.api.UserItem
 import com.ahmrh.githubuser.databinding.ItemUserBinding
 import com.bumptech.glide.Glide
 

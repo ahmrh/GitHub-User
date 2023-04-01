@@ -1,4 +1,4 @@
-package com.ahmrh.githubuser
+package com.ahmrh.githubuser.api
 
 import retrofit2.Call
 import retrofit2.http.*
