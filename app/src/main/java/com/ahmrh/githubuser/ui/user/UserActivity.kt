@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.api.UserResponse
+import com.ahmrh.githubuser.database.FavoriteUser
 import com.ahmrh.githubuser.databinding.ActivityUserBinding
 import com.ahmrh.githubuser.ui.adapter.SectionsPagerAdapter
 import com.bumptech.glide.Glide
@@ -17,6 +18,7 @@ class UserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
     private val userViewModel by viewModels<UserViewModel>()
+    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>()
 
     companion object {
         const val USERNAME = "extra_name"
@@ -35,17 +37,30 @@ class UserActivity : AppCompatActivity() {
 
         userViewModel.detail.observe(this) { detail ->
             setDetailUser(detail)
+            setFavoriteButton(detail)
         }
 
         userViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
-        init()
+        initData()
         setViewPager()
         supportActionBar?.elevation = 0f
     }
-    private fun init(){
+
+    private fun setFavoriteButton(detail: UserResponse?) {
+        binding.btnFavorite.setOnClickListener{
+            val username = detail?.login.toString()
+            val avatarUrl = detail?.avatarUrl
+
+            val newFavoriteUser = FavoriteUser(username, avatarUrl)
+
+            favoriteUserViewModel.insert(newFavoriteUser)
+        }
+    }
+
+    private fun initData(){
         val username = intent.getStringExtra(USERNAME).toString()
         Toast.makeText(this, username, Toast.LENGTH_SHORT).show()
         userViewModel.getDetail(username)

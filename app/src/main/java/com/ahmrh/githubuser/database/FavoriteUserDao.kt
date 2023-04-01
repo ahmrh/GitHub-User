@@ -3,6 +3,7 @@ package com.ahmrh.githubuser.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+@Dao
 interface FavoriteUserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(favoriteUser : FavoriteUser)
@@ -13,7 +14,7 @@ interface FavoriteUserDao {
     @Delete
     fun delete(favoriteUser: FavoriteUser)
 
-    @Query("SELECT * from favoriteUser ORDER BY id ASC")
+    @Query("SELECT * from favoriteUser")
     fun getAllFavoriteUser(): LiveData<List<FavoriteUser>>
 
 }

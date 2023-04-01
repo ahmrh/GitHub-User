@@ -21,4 +21,5 @@ class FavoriteUserViewModel(application: Application) : ViewModel() {
     fun getAllFavoriteUsers(): LiveData<List<FavoriteUser>> =
         mFavoriteUserRepository.getAllFavoriteUsers()
 
+
 }
