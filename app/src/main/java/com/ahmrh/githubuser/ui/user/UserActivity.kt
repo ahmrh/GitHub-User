@@ -10,6 +10,7 @@ import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.api.UserResponse
 import com.ahmrh.githubuser.database.FavoriteUser
 import com.ahmrh.githubuser.databinding.ActivityUserBinding
+import com.ahmrh.githubuser.helper.ViewModelFactory
 import com.ahmrh.githubuser.ui.adapter.SectionsPagerAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -18,7 +19,9 @@ class UserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
     private val userViewModel by viewModels<UserViewModel>()
-    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>()
+    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>{
+        ViewModelFactory.getInstance(application)
+    }
 
     companion object {
         const val USERNAME = "extra_name"
