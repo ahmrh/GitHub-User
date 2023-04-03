@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.api.UserItem
 import com.ahmrh.githubuser.databinding.ActivityMainBinding
-import com.ahmrh.githubuser.ui.user.UserActivity
 import com.ahmrh.githubuser.ui.adapter.ListUserAdapter
+import com.ahmrh.githubuser.ui.setting.SettingActivity
+import com.ahmrh.githubuser.ui.favoriteuser.FavoriteUserActivity
+import com.ahmrh.githubuser.ui.user.UserActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -44,10 +46,12 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val searchItem = menu.findItem(R.id.menu_search)
+        val searchView = searchItem.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.queryHint = resources.getString(R.string.search_hint)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
@@ -60,6 +64,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_favorite->{
+                startActivity(Intent(this@MainActivity, FavoriteUserActivity::class.java))
+            }
+            R.id.menu_setting-> {
+                startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+            }
+        }
         return true
     }
 

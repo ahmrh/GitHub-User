@@ -1,5 +1,6 @@
 package com.ahmrh.githubuser.ui.user
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,18 +8,20 @@ import androidx.lifecycle.ViewModel
 import com.ahmrh.githubuser.api.ApiConfig
 import com.ahmrh.githubuser.api.UserItem
 import com.ahmrh.githubuser.api.UserResponse
+import com.ahmrh.githubuser.database.FavoriteUser
+import com.ahmrh.githubuser.repository.FavoriteUserRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel : ViewModel() {
+class UserViewModel(application: Application) : ViewModel() {
 
     companion object {
         private const val TAG = "UserViewModel"
     }
 
-    private val _login = MutableLiveData<String>()
-    val login: LiveData<String> = _login
+    private val mFavoriteUserRepository: FavoriteUserRepository =
+        FavoriteUserRepository(application)
 
     private val _detail = MutableLiveData<UserResponse>()
     val detail: LiveData<UserResponse> = _detail
@@ -32,9 +35,19 @@ class UserViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+
+    // Favorite User Method
+    fun isFavorite(username: String) = mFavoriteUserRepository.getFavoriteUserByUsername(username)
+    fun delete(user: FavoriteUser){
+        mFavoriteUserRepository.delete(user)
+    }
+    fun insert(user: FavoriteUser) {
+        mFavoriteUserRepository.insert(user)
+    }
+
+    // User Method
     fun getDetail(username: String) {
-        _isLoading.value = true
-        _login.value = username
+
         val client = ApiConfig.getApiService().getUser(username)
         client.enqueue(object : Callback<UserResponse> {
             override fun onResponse(
@@ -55,6 +68,7 @@ class UserViewModel : ViewModel() {
             }
         })
     }
+
 
     fun getFollowing(username: String) {
         _isLoading.value = true

@@ -1,6 +1,10 @@
 package com.ahmrh.githubuser.ui.user
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -12,17 +16,16 @@ import com.ahmrh.githubuser.database.FavoriteUser
 import com.ahmrh.githubuser.databinding.ActivityUserBinding
 import com.ahmrh.githubuser.helper.ViewModelFactory
 import com.ahmrh.githubuser.ui.adapter.SectionsPagerAdapter
+import com.ahmrh.githubuser.ui.setting.SettingActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
 class UserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
-    private val userViewModel by viewModels<UserViewModel>()
-    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>{
+    private val userViewModel by viewModels<UserViewModel>{
         ViewModelFactory.getInstance(application)
     }
-
     companion object {
         const val USERNAME = "extra_name"
 
@@ -40,26 +43,58 @@ class UserActivity : AppCompatActivity() {
 
         userViewModel.detail.observe(this) { detail ->
             setDetailUser(detail)
-            setFavoriteButton(detail)
         }
 
         userViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
+        val username = intent.getStringExtra(USERNAME).toString()
+        userViewModel.isFavorite(username).observe(this){
+            if(it == null){
+                setFavoriteButton()
+            } else{
+                setDeleteFavoriteButton(it)
+            }
+        }
+
         initData()
         setViewPager()
         supportActionBar?.elevation = 0f
+        supportActionBar?.title = "Detail User"
     }
 
-    private fun setFavoriteButton(detail: UserResponse?) {
-        binding.btnFavorite.setOnClickListener{
-            val username = detail?.login.toString()
-            val avatarUrl = detail?.avatarUrl
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.setting_menu, menu)
 
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_setting-> {
+                startActivity(Intent(this@UserActivity, SettingActivity::class.java))
+            }
+        }
+        return true
+    }
+    private fun setDeleteFavoriteButton(user: FavoriteUser){
+        binding.btnFavorite.setImageResource(R.drawable.baseline_favorite_white_24)
+        binding.btnFavorite.setOnClickListener{
+            userViewModel.delete(user)
+        }
+    }
+
+    private fun setFavoriteButton() {
+        val username = intent.getStringExtra(USERNAME).toString()
+        val avatarUrl = userViewModel.detail.value?.avatarUrl.toString()
+
+        binding.btnFavorite.setImageResource(R.drawable.baseline_favorite_border_white_24)
+        binding.btnFavorite.setOnClickListener {
             val newFavoriteUser = FavoriteUser(username, avatarUrl)
 
-            favoriteUserViewModel.insert(newFavoriteUser)
+            userViewModel.insert(newFavoriteUser)
         }
     }
 
@@ -95,10 +130,12 @@ class UserActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
             binding.layoutDetail.visibility = View.GONE
             binding.layoutFollow.visibility = View.GONE
+            binding.btnFavorite.visibility = View.GONE
         } else {
             binding.progressBar.visibility = View.GONE
             binding.layoutDetail.visibility = View.VISIBLE
             binding.layoutFollow.visibility = View.VISIBLE
+            binding.btnFavorite.visibility = View.VISIBLE
         }
     }
 }
