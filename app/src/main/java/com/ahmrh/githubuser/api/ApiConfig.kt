@@ -13,9 +13,9 @@ class ApiConfig {
 
             val authInterceptor = Interceptor{ chain ->
                 val req = chain.request()
-                val token = "token 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"
+                val token = BuildConfig.KEY
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", token)
+                    .addHeader("Authorization", "")
                     .build()
                 chain.proceed(requestHeaders)
             }
@@ -29,8 +29,11 @@ class ApiConfig {
                 .addInterceptor(authInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .build()
+
+            val api_url = BuildConfig.API_URL
+
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl(api_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

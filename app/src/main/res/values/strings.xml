@@ -3,4 +3,5 @@
     <string name="tab_text_1">Follower</string>
     <string name="tab_text_2">Following</string>
     <string name="search_hint">Search GitHub User</string>
+    <string name="setting">Setting</string>
 </resources>

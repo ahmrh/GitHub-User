@@ -1,13 +1,12 @@
 package com.ahmrh.githubuser.ui.favoriteuser
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.database.FavoriteUser
@@ -20,14 +19,15 @@ import com.ahmrh.githubuser.ui.user.UserActivity
 
 class FavoriteUserActivity : AppCompatActivity() {
 
-    private lateinit var  binding: ActivityFavoriteUserBinding
-    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>(){
+    companion object {
+        const val TAG = "FavoriteUserActivity"
+    }
+
+    private lateinit var binding: ActivityFavoriteUserBinding
+    private val favoriteUserViewModel by viewModels<FavoriteUserViewModel>() {
         ViewModelFactory.getInstance(application)
     }
 
-    companion object{
-        const val  TAG = "FavoriteUserActivity"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +36,13 @@ class FavoriteUserActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Favorite User"
 
-        favoriteUserViewModel.getAllFavoriteUsers().observe(this){
-            if(it != null){
+        favoriteUserViewModel.getAllFavoriteUsers().observe(this) {
+            if (it != null) {
                 setUsersData(it)
             }
         }
 
-        favoriteUserViewModel.isLoading.observe(this){
+        favoriteUserViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
@@ -57,25 +57,26 @@ class FavoriteUserActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.menu_setting-> {
+        when (item.itemId) {
+            R.id.menu_setting -> {
                 startActivity(Intent(this@FavoriteUserActivity, SettingActivity::class.java))
             }
         }
         return true
     }
+
     private fun setUsersData(listUser: List<FavoriteUser>) {
         binding.rvUser.layoutManager = LinearLayoutManager(this)
 
-        val users =  ArrayList<ListUserValue>()
-        for (user in listUser){
+        val users = ArrayList<ListUserValue>()
+        for (user in listUser) {
             users.add(ListUserValue(user.username, user.avatarUrl))
         }
 
         val adapter = ListUserAdapter(users)
         binding.rvUser.adapter = adapter
 
-        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
+        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListUserValue) {
                 showSelectedUser(data)
             }
@@ -90,12 +91,7 @@ class FavoriteUserActivity : AppCompatActivity() {
 
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
+    private fun showLoading(isLoading: Boolean) = if (isLoading) binding.progressBar.visibility =
+        View.VISIBLE else binding.progressBar.visibility = View.GONE
 
 }

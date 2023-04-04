@@ -22,7 +22,7 @@ class FollowerFragment : Fragment() {
     private lateinit var listFollower: List<UserItem>
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentFollowerBinding.inflate(inflater, container, false)
         return binding.root
@@ -38,22 +38,22 @@ class FollowerFragment : Fragment() {
             showLoading(it)
         }
 
-        listFollower = viewModel.listFollower.value?: emptyList()
+        listFollower = viewModel.listFollower.value ?: emptyList()
         setListUsers(listFollower)
     }
 
     private fun setListUsers(listUser: List<UserItem>) {
-        binding.rvUser.layoutManager =  LinearLayoutManager(requireActivity())
+        binding.rvUser.layoutManager = LinearLayoutManager(requireActivity())
 
         val users = ArrayList<ListUserValue>()
-        for(user in listUser){
+        for (user in listUser) {
             users.add(ListUserValue(user.login, user.avatarUrl))
         }
 
         val adapter = ListUserAdapter(users)
         binding.rvUser.adapter = adapter
 
-        adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
+        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(user: ListUserValue) {
                 showSelectedUser(user)
             }
@@ -68,13 +68,8 @@ class FollowerFragment : Fragment() {
         startActivity(detailIntent)
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
-
+    private fun showLoading(isLoading: Boolean) = if (isLoading)
+        binding.progressBar.visibility = View.VISIBLE else
+        binding.progressBar.visibility = View.GONE
 
 }

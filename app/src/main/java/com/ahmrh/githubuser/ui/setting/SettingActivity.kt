@@ -9,6 +9,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.databinding.ActivitySettingBinding
 import com.ahmrh.githubuser.helper.SettingViewModelFactory
 
@@ -22,7 +23,7 @@ class SettingActivity : AppCompatActivity() {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Setting"
+        supportActionBar?.title = getString(R.string.setting)
 
 
         val pref = SettingPreferences.getInstance(dataStore)

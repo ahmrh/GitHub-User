@@ -70,11 +70,7 @@ class FollowingFragment: Fragment() {
         startActivity(detailIntent)
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
+    private fun showLoading(isLoading: Boolean) = if (isLoading)
+        binding.progressBar.visibility = View.VISIBLE else
+        binding.progressBar.visibility = View.GONE
 }
