@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,10 +11,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.ahmrh.githubuser.databinding.ActivitySettingBinding
 import com.ahmrh.githubuser.helper.SettingViewModelFactory
-import com.ahmrh.githubuser.helper.ViewModelFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 class SettingActivity : AppCompatActivity() {
 
     private lateinit var  binding: ActivitySettingBinding

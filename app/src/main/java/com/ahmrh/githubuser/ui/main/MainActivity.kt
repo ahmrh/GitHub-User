@@ -9,16 +9,27 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ahmrh.githubuser.R
 import com.ahmrh.githubuser.api.UserItem
+import com.ahmrh.githubuser.database.ListUserValue
 import com.ahmrh.githubuser.databinding.ActivityMainBinding
+import com.ahmrh.githubuser.helper.SettingViewModelFactory
 import com.ahmrh.githubuser.ui.adapter.ListUserAdapter
 import com.ahmrh.githubuser.ui.setting.SettingActivity
 import com.ahmrh.githubuser.ui.favoriteuser.FavoriteUserActivity
+import com.ahmrh.githubuser.ui.setting.SettingPreferences
+import com.ahmrh.githubuser.ui.setting.SettingViewModel
 import com.ahmrh.githubuser.ui.user.UserActivity
 
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -38,6 +49,23 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
+        }
+
+        setTheme()
+    }
+
+    private fun setTheme() {
+
+        val pref = SettingPreferences.getInstance(dataStore)
+        val settingViewModel = ViewModelProvider(this, SettingViewModelFactory(pref)).get(
+            SettingViewModel::class.java
+        )
+        settingViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
     }
 
@@ -80,22 +108,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUsersData(listUser: List<UserItem>) {
+        val users = ArrayList<ListUserValue>()
+        for (user in listUser){
+            users.add(ListUserValue(user.login, user.avatarUrl))
+        }
 
-        val adapter = ListUserAdapter(listUser)
+        val adapter = ListUserAdapter(users)
         binding.rvUser.adapter = adapter
 
         adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: UserItem) {
+            override fun onItemClicked(data: ListUserValue) {
                 showSelectedUser(data)
             }
         })
     }
 
-    private fun showSelectedUser(user: UserItem) {
+    private fun showSelectedUser(user: ListUserValue) {
         val detailIntent = Intent(this@MainActivity, UserActivity::class.java)
         detailIntent.putExtra(UserActivity.USERNAME, user.login)
+        detailIntent.putExtra(UserActivity.AVATAR_URL, user.avatarUrl)
         startActivity(detailIntent)
-
     }
 
 

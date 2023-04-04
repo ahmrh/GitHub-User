@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ahmrh.githubuser.api.UserItem
+import com.ahmrh.githubuser.database.ListUserValue
 import com.ahmrh.githubuser.databinding.FragmentFollowerBinding
 import com.ahmrh.githubuser.ui.adapter.ListUserAdapter
 
@@ -43,19 +44,26 @@ class FollowerFragment : Fragment() {
 
     private fun setListUsers(listUser: List<UserItem>) {
         binding.rvUser.layoutManager =  LinearLayoutManager(requireActivity())
-        val adapter = ListUserAdapter(listUser)
+
+        val users = ArrayList<ListUserValue>()
+        for(user in listUser){
+            users.add(ListUserValue(user.login, user.avatarUrl))
+        }
+
+        val adapter = ListUserAdapter(users)
         binding.rvUser.adapter = adapter
 
         adapter.setOnItemClickCallback(object: ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(user: UserItem) {
+            override fun onItemClicked(user: ListUserValue) {
                 showSelectedUser(user)
             }
         })
     }
 
-    private fun showSelectedUser(user: UserItem) {
+    private fun showSelectedUser(user: ListUserValue) {
         val detailIntent = Intent(requireActivity(), UserActivity::class.java)
         detailIntent.putExtra(UserActivity.USERNAME, user.login)
+        detailIntent.putExtra(UserActivity.AVATAR_URL, user.avatarUrl)
         activity?.finish()
         startActivity(detailIntent)
     }

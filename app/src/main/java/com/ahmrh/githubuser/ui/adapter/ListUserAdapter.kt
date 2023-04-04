@@ -3,11 +3,11 @@ package com.ahmrh.githubuser.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ahmrh.githubuser.api.UserItem
+import com.ahmrh.githubuser.database.ListUserValue
 import com.ahmrh.githubuser.databinding.ItemUserBinding
 import com.bumptech.glide.Glide
 
-class ListUserAdapter(private val listUser: List<UserItem>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+class ListUserAdapter(private val listUser: List<ListUserValue>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -15,7 +15,7 @@ class ListUserAdapter(private val listUser: List<UserItem>) : RecyclerView.Adapt
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: UserItem)
+        fun onItemClicked(data: ListUserValue)
     }
     class ViewHolder(var binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 

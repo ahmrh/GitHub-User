@@ -2,7 +2,6 @@ package com.ahmrh.githubuser.ui.user
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +27,7 @@ class UserActivity : AppCompatActivity() {
     }
     companion object {
         const val USERNAME = "extra_name"
+        const val AVATAR_URL = "extra_avatar_url"
 
         @StringRes
         private val TAB_TITLES = intArrayOf(
@@ -50,6 +50,7 @@ class UserActivity : AppCompatActivity() {
         }
 
         val username = intent.getStringExtra(USERNAME).toString()
+
         userViewModel.isFavorite(username).observe(this){
             if(it == null){
                 setFavoriteButton()
@@ -88,7 +89,7 @@ class UserActivity : AppCompatActivity() {
 
     private fun setFavoriteButton() {
         val username = intent.getStringExtra(USERNAME).toString()
-        val avatarUrl = userViewModel.detail.value?.avatarUrl.toString()
+        val avatarUrl = intent.getStringExtra(AVATAR_URL).toString()
 
         binding.btnFavorite.setImageResource(R.drawable.baseline_favorite_border_white_24)
         binding.btnFavorite.setOnClickListener {
